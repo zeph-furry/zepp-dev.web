@@ -1,26 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import LandingPage from "./LandingPage";
+import DarkModeToggle from "./DarkModeToggle";
 
-function App() {
+const App = () => {
+  const [theme, setTheme] = useState("light");
+
+  useEffect(() => {
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    setTheme(prefersDark ? "dark" : "light");
+    document.documentElement.className = prefersDark ? "dark" : "";
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    document.documentElement.className = newTheme === "dark" ? "dark" : "";
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <LandingPage />
+      <DarkModeToggle theme={theme} toggleTheme={toggleTheme} />
+    </>
   );
-}
+};
 
 export default App;
